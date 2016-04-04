@@ -1,20 +1,5 @@
-<<<<<<< HEAD
 /bin
 /cc_EG
 .project
 .classpath
 *.log
-=======
-*.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
->>>>>>> 8b51adb61ae23c7a8e495d5370152f2e27cbd452
