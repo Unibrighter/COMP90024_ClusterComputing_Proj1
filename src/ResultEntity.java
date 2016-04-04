@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -72,25 +73,24 @@ public class ResultEntity implements java.io.Serializable
 		return target;
 	}
 
-	public static List<String> sortAccordingToValue(HashMap<String, Long> result_map)
+	public static List<String> sortAccordingToValue(HashMap<String, Long> table)
 	{
-		List<String> key_array = new ArrayList<String>(result_map.keySet());
-
-		Collections.sort(key_array, new Comparator<Object>()
+		List<String> list = new ArrayList<String>(table.keySet());
+		Collections.sort(list, new Comparator<Object>()
 		{
 			@Override
-			public int compare(Object s1, Object s2)
+			public int compare(Object o1, Object o2)
 			{
-				if (result_map.get((String) s1) > result_map.get((String) s2))
+				if ((Long) table.get(o2) > (Long) table.get(o1))
 					return 1;
-				else if (result_map.get((String)s1) == result_map.get((String)s2))
+				else if ((Long) table.get(o2) == (Long) table.get(o1))
 					return 0;
 				else
 					return -1;
 			}
 
 		});
-		return key_array;
+		return list;
 
 	}
 
