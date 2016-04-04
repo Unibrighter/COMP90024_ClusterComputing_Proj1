@@ -81,9 +81,11 @@ public class ResultEntity implements java.io.Serializable
 			@Override
 			public int compare(Object o1, Object o2)
 			{
-				if ((Long) table.get(o2) > (Long) table.get(o1))
+				long value=(Long) table.get(o2) - (Long) table.get(o1);
+				
+				if (value>0)
 					return 1;
-				else if ((Long) table.get(o2) == (Long) table.get(o1))
+				else if (value==0)
 					return 0;
 				else
 					return -1;

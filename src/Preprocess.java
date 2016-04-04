@@ -55,6 +55,11 @@ public class Preprocess
 		int count_line = 0;
 		while (scanner.hasNextLine())
 		{
+			String nextline = this.readOneRawLine();
+			if (nextline == null)
+				continue;// this is a "headless" line, the tweet part of this
+							// line has already been taken care of
+
 			tweet_content_array.add(this.readOneRawLine());
 			count_line++;
 		}
@@ -77,11 +82,28 @@ public class Preprocess
 		int end_index = str_dummy.indexOf("\"\",\"\"in_reply_to_status_id");
 		// System.out.println("raw reading\t"+str_dummy);
 
-		String result = " " + str_dummy.substring(start_index, end_index) + " ";
-
-		//		System.out.println(result);
-
-		return result;
+//		if (start_index <= 0 || end_index <= 0)
+//		{
+//
+//			System.out.println("Wrong index anchor:");
+//			System.out.println("start:" + start_index);
+//			System.out.println("end:" + end_index);
+//			System.out.println("line length:" + str_dummy.length());
+//			System.out.println("The line is:\n" + str_dummy);
+//		}
+		
+		// error control:
+		// sometimes the tweet content includes a '\n'
+		// this means that the tweet ends with end_index as -1
+		// and the following raw_line is a "headless" line, with end_index
+		// equals 0
+		// which shall be abandoned
+		if (-1 == end_index)
+			return " " + str_dummy.substring(start_index) + " ";
+		if (0 == end_index)
+			return null;
+		else
+			return " " + str_dummy.substring(start_index, end_index) + " ";
 
 	}
 
