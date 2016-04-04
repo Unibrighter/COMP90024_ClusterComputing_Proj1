@@ -26,8 +26,12 @@ public class Main
 
 		// manager.printTestOutput(OUTPUT_PATH);
 
+		long stamp_before_preprocess = System.currentTimeMillis();
+
 		// now we get the string array we care about ,now we can use
 		String[] str_array = pre_processor.getTheTweetListAsArray();
+
+		long stamp_after_preprocess = System.currentTimeMillis();
 
 		// ------------------------------------------------------------------------
 		// using default args
@@ -74,6 +78,7 @@ public class Main
 
 		MPI.COMM_WORLD.Barrier();
 
+		long stamp_after_individual_finish = System.currentTimeMillis();
 		// Thread 0 accept message from other thread
 
 		if (rank == 0)
@@ -93,7 +98,20 @@ public class Main
 				final_result = ResultEntity.addTo(final_result, rec[0]);
 
 			}
+
+			long stamp_after_sum_up = System.currentTimeMillis();
+
+			System.out.println("*******Time Information********");
+
+			System.out
+					.println("Preprocess:\t\t" + (stamp_after_preprocess - stamp_before_preprocess) + "\tMilli secs.");
+			System.out.println(
+					"Multiple Tasks:\t\t" + (stamp_after_individual_finish - stamp_after_preprocess) + "\tMilli secs.");
+			System.out.println("Totol time:\t\t" + (stamp_after_sum_up - stamp_before_preprocess) + "\tMilli secs.");
+
 			ResultEntity.printResult(target_word, final_result);
+
+			System.out.println("*******Time Information********");
 		}
 
 		// ===============
@@ -121,7 +139,7 @@ public class Main
 			for (int j = 0; j < word_list_per_line.length; j++)
 			{
 				String dummy = word_list_per_line[j];
-				if (dummy.length() == 0)
+				if (dummy.length() == 0 || (dummy.length() == 1 && (dummy.charAt(0) == '#' || dummy.charAt(0) == '@')))
 					continue;
 				if (0 == target_phrase.compareToIgnoreCase(dummy))
 				{
@@ -155,11 +173,11 @@ public class Main
 			}
 
 		}
-		System.out.println("No." + rank + " task finished : " );
+		System.out.println("No." + rank + " task finished : ");
 		System.out.println("------------------------------");
-		System.out.println(target_phrase+" : "+target_count+" times");
-		System.out.println("Topics discovered : "+topic_count.size()+" times");
-		System.out.println("Users discovered : "+at_user_count.size()+" times");
+		System.out.println(target_phrase + " : " + target_count + " times");
+		System.out.println("Topics discovered : " + topic_count.size() + " times");
+		System.out.println("Users discovered : " + at_user_count.size() + " times");
 		System.out.println("==============================");
 		return new ResultEntity(topic_count, at_user_count, target_count);
 
