@@ -76,14 +76,14 @@ public class ResultEntity implements java.io.Serializable
 	{
 		List<String> key_array = new ArrayList<String>(result_map.keySet());
 
-		Collections.sort(key_array, new Comparator<String>()
+		Collections.sort(key_array, new Comparator<Object>()
 		{
 			@Override
-			public int compare(String s1, String s2)
+			public int compare(Object s1, Object s2)
 			{
-				if (result_map.get(s1) > result_map.get(s2))
+				if (result_map.get((String) s1) > result_map.get((String) s2))
 					return 1;
-				else if (result_map.get(s1) == result_map.get(s2))
+				else if (result_map.get((String)s1) == result_map.get((String)s2))
 					return 0;
 				else
 					return -1;
@@ -97,7 +97,7 @@ public class ResultEntity implements java.io.Serializable
 	public static void printResult(String phrase, ResultEntity result_entity)
 	{
 		// print out count
-		System.out.println("The phrase" + phrase + " show up in the file for :\t\t" + result_entity.target_phrase_count
+		System.out.println("The phrase " + phrase + " show up in the file for :\t\t" + result_entity.target_phrase_count
 				+ " times.");
 		List<String> order_rank = ResultEntity.sortAccordingToValue(result_entity.at_user_count);
 

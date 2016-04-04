@@ -48,14 +48,13 @@ public class Main
 		ResultEntity[] result_per_task = new ResultEntity[1];
 
 		// start the statics information gathering,and get the result entity
-		MPI.COMM_WORLD.Scatter(str_array, START_OFFSET , work_load_per_task, MPI.OBJECT,
-				string_array_per_task, START_OFFSET, work_load_per_task, MPI.OBJECT, master_rank);
+		MPI.COMM_WORLD.Scatter(str_array, START_OFFSET, work_load_per_task, MPI.OBJECT, string_array_per_task,
+				START_OFFSET, work_load_per_task, MPI.OBJECT, master_rank);
 
 		MPI.COMM_WORLD.Barrier();
 
-		
-		if(rank!=0)
-			System.out.println("No. "+rank+ " starts with the string line "+string_array_per_task[0]);
+		if (rank != 0)
+			System.out.println("No. " + rank + " starts with the string line " + string_array_per_task[0]);
 		// ===============
 		// Each task does its own job according to the partition, which is
 		// marked by its rank
@@ -66,24 +65,41 @@ public class Main
 		MPI.COMM_WORLD.Gather(result_per_task, 0, 1, MPI.OBJECT, total_final_result_array, 0, 1, MPI.OBJECT,
 				master_rank);
 
-		ResultEntity final_result = total_final_result_array[0];
+		// using the send / recv signal to gather the final results
 
-
-		for (int i = 0; i < total_final_result_array.length; i++)
+		if (0 != rank)
 		{
-			System.out.println(total_final_result_array[i]);
+			MPI.COMM_WORLD.Isend(result_per_task, START_OFFSET, 1, MPI.OBJECT, master_rank, 99);
 		}
-		
-		for (int i = 1; i < size; i++)
+
+		MPI.COMM_WORLD.Barrier();
+
+		// Thread 0 accept message from other thread
+
+		if (rank == 0)
 		{
-			final_result=ResultEntity.addTo(final_result, total_final_result_array[i]);
+			ResultEntity final_result = result_per_task[0];// for thread 0 ,
+															// which is the
+															// master thread
+			ResultEntity[] rec = new ResultEntity[1];
+			rec[0] = null;
+
+			for (int i = 1; i < size; i++)
+			{
+
+				// receive the total number of term input
+				MPI.COMM_WORLD.Recv(rec, 0, 1, MPI.OBJECT, i, 99);
+
+				final_result = ResultEntity.addTo(final_result, rec[0]);
+
+			}
+			ResultEntity.printResult(target_word, final_result);
 		}
 
 		// ===============
-		
+
 		MPI.Finalize();
-		
-		ResultEntity.printResult(target_word, final_result);
+
 		// ------------------------------------------------------------------------
 
 	}
@@ -100,12 +116,13 @@ public class Main
 
 		for (int i = 0; i < raw_tweet_array.length; i++)
 		{
-			String[] word_list_per_line = raw_tweet_array[0].split("[^_#@a-zA-Z0-9]+");
+			String[] word_list_per_line = raw_tweet_array[i].split("[^_#@a-zA-Z0-9]+");
 
 			for (int j = 0; j < word_list_per_line.length; j++)
 			{
 				String dummy = word_list_per_line[j];
-				if (dummy.length()==0) break;
+				if (dummy.length() == 0)
+					continue;
 				if (0 == target_phrase.compareToIgnoreCase(dummy))
 				{
 					target_count++;
@@ -138,7 +155,12 @@ public class Main
 			}
 
 		}
-		System.out.println("No."+rank+" task finished.");
+		System.out.println("No." + rank + " task finished : " );
+		System.out.println("------------------------------");
+		System.out.println(target_phrase+" : "+target_count+" times");
+		System.out.println("Topics discovered : "+topic_count.size()+" times");
+		System.out.println("Users discovered : "+at_user_count.size()+" times");
+		System.out.println("==============================");
 		return new ResultEntity(topic_count, at_user_count, target_count);
 
 	}
