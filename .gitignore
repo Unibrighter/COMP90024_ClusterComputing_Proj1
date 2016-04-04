@@ -1,0 +1,5 @@
+/bin
+/cc_EG
+.project
+.classpath
+*.log
