@@ -8,35 +8,10 @@ public class Main
 	private static final String OUTPUT_PATH = "./out_test.txt";
 
 	// private static final String INPUT_PATH = "./twitter.csv";
-	private static final String INPUT_PATH = "./twitter.csv";
+	private static final String INPUT_PATH = "./twitter30000.csv";
 
 	public static void main(String[] args)
 	{
-
-		String target_phrase = "money";
-
-		// read through the whole file to do the pre-process
-		// the file path is in the home directory
-
-		File file = new File(INPUT_PATH);
-		System.out.println(INPUT_PATH);
-
-		Preprocess pre_processor = new Preprocess(file, 1500);
-
-		pre_processor.readThrough();
-
-		// manager.printTestOutput(OUTPUT_PATH);
-
-		long stamp_before_preprocess = System.currentTimeMillis();
-
-		// now we get the string array we care about ,now we can use
-		String[] str_array = pre_processor.getTheTweetListAsArray();
-
-		long stamp_after_preprocess = System.currentTimeMillis();
-		System.out.println("\n>>>>After preprocessing, system time: " + stamp_after_preprocess);
-
-		// ------------------------------------------------------------------------
-		// using default args
 		MPI.Init(args);
 
 		int rank = MPI.COMM_WORLD.Rank();
@@ -44,17 +19,57 @@ public class Main
 		int master_rank = 0;
 		final int START_OFFSET = 0;
 
-		int total_tweet_count = str_array.length;
-		int work_load_per_task = total_tweet_count / size;
+		String target_phrase = "money";
+
+		// read through the whole file to do the pre-process
+		// the file path is in the home directory
+
+		File file = null;
+		Preprocess pre_processor = null;
+		String[] str_array = null;
 
 		// the data which each task operates on
-		String[] string_array_per_task = new String[work_load_per_task];
+		String[] string_array_per_task = null;
 
 		ResultEntity[] result_per_task = new ResultEntity[1];
+		long stamp_before_preprocess = System.currentTimeMillis();
 
-		// start the statics information gathering,and get the result entity
-		MPI.COMM_WORLD.Scatter(str_array, START_OFFSET, work_load_per_task, MPI.OBJECT, string_array_per_task,
-				START_OFFSET, work_load_per_task, MPI.OBJECT, master_rank);
+		int[] msg_size = new int[1];
+		if (0 == rank)
+		{
+			// manager.printTestOutput(OUTPUT_PATH);
+
+			file = new File(INPUT_PATH);
+			pre_processor = new Preprocess(file, 1500);
+			pre_processor.readThrough();
+			str_array = pre_processor.getTheTweetListAsArray();
+
+			int total_tweet_count = str_array.length;
+			msg_size[0] = total_tweet_count / size;
+			for (int i = 1; i < size; i++)
+			{// send out the length information
+				MPI.COMM_WORLD.Isend(msg_size, START_OFFSET, 1, MPI.INT, i, 99);
+			}
+			// start the statics information gathering,and get the result entity
+//			MPI.COMM_WORLD.Scatter(str_array, START_OFFSET, msg_size[0], MPI.OBJECT, string_array_per_task,
+//					START_OFFSET, msg_size[0], MPI.OBJECT, master_rank);
+
+		}
+
+		if (0 != rank)
+		{
+			MPI.COMM_WORLD.Recv(msg_size, 0, 1, MPI.INT, master_rank, 99);
+			System.out.println("task :\t" + rank + "\t, operation size " + msg_size[0]);
+		}
+
+		string_array_per_task = new String[msg_size[0]];
+
+		System.out.println("As no." + rank + " the first line in my own task is :\n" + string_array_per_task[0]);
+
+		long stamp_after_preprocess = System.currentTimeMillis();
+		System.out.println("\n>>>>After preprocessing, system time: " + stamp_after_preprocess);
+
+		// ------------------------------------------------------------------------
 
 		// ===============
 		// Each task does its own job according to the partition, which is
@@ -65,14 +80,14 @@ public class Main
 		// result_per_task[0] = Main.analyseText(target_phrase, rank, size,
 		// work_load_per_task, string_array_per_task);
 
-
 		HashMap<String, Long> topic_count = new HashMap<String, Long>();
 
 		HashMap<String, Long> at_user_count = new HashMap<String, Long>();
 
 		long target_count = 0;
 		long time_start = System.currentTimeMillis();
-		System.out.println("\n>>>>As No.\t" + rank + "\tBefore calculating the result, system time: " + System.currentTimeMillis());
+		System.out.println("\n>>>>As No.\t" + rank + "\tBefore calculating the result, system time: "
+				+ System.currentTimeMillis());
 		for (int i = 0; i < string_array_per_task.length; i++)
 		{
 			String[] word_list_per_line = string_array_per_task[i].split("[^_#@a-zA-Z0-9]+");
@@ -134,13 +149,15 @@ public class Main
 
 		final int MESSAGE_TAG_BASE = 100;
 
-		System.out.println("\n>>>>As No.\t" + rank + "\tBefore sending the message, system time: " + System.currentTimeMillis());
+		System.out.println(
+				"\n>>>>As No.\t" + rank + "\tBefore sending the message, system time: " + System.currentTimeMillis());
 
 		if (0 != rank)
 		{
 			MPI.COMM_WORLD.Isend(result_per_task, START_OFFSET, 1, MPI.OBJECT, master_rank, rank + MESSAGE_TAG_BASE);
 		}
-		System.out.println("\n>>>>As No.\t" + rank + "\tAfter sending the message, system time: " + System.currentTimeMillis());
+		System.out.println(
+				"\n>>>>As No.\t" + rank + "\tAfter sending the message, system time: " + System.currentTimeMillis());
 		long stamp_after_individual_finish = System.currentTimeMillis();
 
 		// Thread 0 accept message from other thread
@@ -171,12 +188,10 @@ public class Main
 
 			System.out
 					.println("Preprocess:\t\t" + (stamp_after_preprocess - stamp_before_preprocess) + "\tMilli secs.");
-			System.out.println(
-					"Multiple Tasks including Arg init , Scatter & Sending:\t\t" + (stamp_after_individual_finish - stamp_after_preprocess) + "\tMilli secs.");
-			
-			System.out.println("Totol time:\t\t" + (stamp_after_sum_up - stamp_before_preprocess) + "\tMilli secs.");
+			System.out.println("Multiple Tasks including Arg init , Scatter & Sending:\t\t"
+					+ (stamp_after_individual_finish - stamp_after_preprocess) + "\tMilli secs.");
 
-			
+			System.out.println("Totol time:\t\t" + (stamp_after_sum_up - stamp_before_preprocess) + "\tMilli secs.");
 
 			System.out.println("*******Time Information********");
 		}
