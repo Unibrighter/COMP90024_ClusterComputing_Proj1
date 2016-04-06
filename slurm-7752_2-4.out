@@ -1,0 +1,138 @@
+MPJ Express (0.44) is started in the multicore configuration
+./twitter.csv
+./twitter.csv
+./twitter.csv
+./twitter.csv
+./twitter.csv
+./twitter.csv
+./twitter.csv
+./twitter.csv
+	End of the whole file		2147894	lines scanned
+>>>>After preprocessing, system time: 1459833928599
+	End of the whole file		2147894	lines scanned
+>>>>After preprocessing, system time: 1459833930913
+	End of the whole file		2147894	lines scanned
+>>>>After preprocessing, system time: 1459833960288
+	End of the whole file		2147894	lines scanned
+>>>>After preprocessing, system time: 1459833961352
+	End of the whole file		2147894	lines scanned
+>>>>After preprocessing, system time: 1459833962340
+	End of the whole file		2147894	lines scanned
+>>>>After preprocessing, system time: 1459833973817
+	End of the whole file		2147894	lines scanned
+>>>>After preprocessing, system time: 1459833974530
+	End of the whole file		2147894	lines scanned
+>>>>After preprocessing, system time: 1459833992874
+>>>>As No.	1	Before calculating the result, system time: 1459833993643
+>>>>As No.	2	Before calculating the result, system time: 1459833993787
+>>>>As No.	3	Before calculating the result, system time: 1459833993966
+>>>>As No.	4	Before calculating the result, system time: 1459833994399
+>>>>As No.	5	Before calculating the result, system time: 1459833995028
+No.2 task finished ,pure calculation using time：	1546
+***As No.	2	, my work load is 	268486	 lines
+------------------------------
+money : 483 times
+Topics discovered : 24416 times
+Users discovered : 55381 times
+==============================
+>>>>As No.	2	Before sending the message, system time: 1459833995335
+>>>>As No.	6	Before calculating the result, system time: 1459833995445
+>>>>As No.	2	After sending the message, system time: 1459833995733
+>>>>As No.	0	Before calculating the result, system time: 1459833995743
+>>>>As No.	7	Before calculating the result, system time: 1459833995990
+No.3 task finished ,pure calculation using time：	3342
+***As No.	3	, my work load is 	268486	 lines
+------------------------------
+money : 476 times
+Topics discovered : 24733 times
+Users discovered : 55831 times
+==============================
+>>>>As No.	3	Before sending the message, system time: 1459833997309
+>>>>As No.	3	After sending the message, system time: 1459833997359
+No.1 task finished ,pure calculation using time：	4350
+***As No.	1	, my work load is 	268486	 lines
+------------------------------
+money : 463 times
+Topics discovered : 24895 times
+Users discovered : 56175 times
+==============================
+>>>>As No.	1	Before sending the message, system time: 1459833997994
+>>>>As No.	1	After sending the message, system time: 1459833998095
+No.4 task finished ,pure calculation using time：	3706
+***As No.	4	, my work load is 	268486	 lines
+------------------------------
+money : 436 times
+Topics discovered : 24474 times
+Users discovered : 55747 times
+==============================
+>>>>As No.	4	Before sending the message, system time: 1459833998105
+>>>>As No.	4	After sending the message, system time: 1459833998198
+No.0 task finished ,pure calculation using time：	2665
+***As No.	0	, my work load is 	268486	 lines
+------------------------------
+money : 503 times
+Topics discovered : 24561 times
+Users discovered : 55582 times
+==============================
+>>>>As No.	0	Before sending the message, system time: 1459833998408
+>>>>As No.	0	After sending the message, system time: 1459833998408
+Begins to sum the results in thread rank 0!!!
+>>>>Before receiving the message, system time: 1459833998408
+No.5 task finished ,pure calculation using time：	3525
+***As No.	5	, my work load is 	268486	 lines
+------------------------------
+money : 453 times
+Topics discovered : 24347 times
+Users discovered : 55243 times
+==============================
+>>>>As No.	5	Before sending the message, system time: 1459833998553
+No.6 task finished ,pure calculation using time：	3115
+***As No.	6	, my work load is 	268486	 lines
+------------------------------
+money : 456 times
+Topics discovered : 24552 times
+Users discovered : 55307 times
+==============================
+>>>>As No.	6	Before sending the message, system time: 1459833998560
+>>>>As No.	6	After sending the message, system time: 1459833998625
+>>>>As No.	5	After sending the message, system time: 1459833998626
+No.7 task finished ,pure calculation using time：	2740
+***As No.	7	, my work load is 	268486	 lines
+------------------------------
+money : 502 times
+Topics discovered : 24394 times
+Users discovered : 55681 times
+==============================
+>>>>As No.	7	Before sending the message, system time: 1459833998730
+>>>>As No.	7	After sending the message, system time: 1459833998785
+>>>>After receiving the message, system time: 1459833998961
+>>>>As No.	0	After sum up, system time: 1459833998961
+The phrase money show up in the file for :		3772 times.
+Top Users who have been mentioned most frequently:
+@5SOS :	674732
+@Calum5SOS :	402251
+@Luke5SOS :	16512
+@itunesfestival :	14700
+@BBCR1 :	10539
+@Michael5SOS :	10075
+@Ashton5SOS :	8144
+@smh :	7067
+@JohnFeldy :	7027
+@GMA :	6235
+===========================
+Top Topics who have been mentioned most frequently:
+#vote5sos :	34706
+#5SOSGOODGIRLS :	24649
+#auspol :	9969
+#AmnesiaMusicVideo :	9725
+#5SOSNINJAS :	9192
+#Photography :	4622
+#5SOSDERPCON :	3883
+#vmas :	3814
+#Sydney :	3714
+#5sosRockOutWithYourSocksOutTour :	3489
+*******Time Information********
+Preprocess:		49	Milli secs.
+Multiple Tasks including Arg init , Scatter & Sending:		23878	Milli secs.
+Totol time:		24480	Milli secs.
+*******Time Information********

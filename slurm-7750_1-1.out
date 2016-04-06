@@ -1,0 +1,47 @@
+MPJ Express (0.44) is started in the multicore configuration
+./twitter.csv
+	End of the whole file		2147894	lines scanned
+>>>>After preprocessing, system time: 1459833723992
+>>>>As No.	0	Before calculating the result, system time: 1459833724345
+No.0 task finished ,pure calculation using time：	11282
+***As No.	0	, my work load is 	2147894	 lines
+------------------------------
+money : 3772 times
+Topics discovered : 104440 times
+Users discovered : 225695 times
+==============================
+>>>>As No.	0	Before sending the message, system time: 1459833735627
+>>>>As No.	0	After sending the message, system time: 1459833735627
+Begins to sum the results in thread rank 0!!!
+>>>>Before receiving the message, system time: 1459833735627
+>>>>After receiving the message, system time: 1459833735628
+>>>>As No.	0	After sum up, system time: 1459833735628
+The phrase money show up in the file for :		3772 times.
+Top Users who have been mentioned most frequently:
+@5SOS :	674733
+@Calum5SOS :	402252
+@Luke5SOS :	16512
+@itunesfestival :	14700
+@BBCR1 :	10539
+@Michael5SOS :	10075
+@Ashton5SOS :	8144
+@smh :	7067
+@JohnFeldy :	7027
+@GMA :	6235
+===========================
+Top Topics who have been mentioned most frequently:
+#vote5sos :	34706
+#5SOSGOODGIRLS :	24649
+#auspol :	9969
+#AmnesiaMusicVideo :	9725
+#5SOSNINJAS :	9192
+#Photography :	4622
+#5SOSDERPCON :	3883
+#vmas :	3814
+#Sydney :	3714
+#5sosRockOutWithYourSocksOutTour :	3489
+*******Time Information********
+Preprocess:		61	Milli secs.
+Multiple Tasks including Arg init , Scatter & Sending:		11635	Milli secs.
+Totol time:		11697	Milli secs.
+*******Time Information********
